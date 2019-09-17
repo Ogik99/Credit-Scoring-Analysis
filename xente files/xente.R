@@ -62,9 +62,11 @@ train$Amount <- abs(train$Amount)
 train <- train %>%
   mutate(TransactionCost = Value - Amount)
   
-#replacing values in the `IsDefaulted` variable
+#replacing values in the IsDefaulted and TransactionStatus variable
 train$IsDefaulted <- ifelse(train$IsDefaulted == 1, "default", "non-default")
 train$IsDefaulted <- factor(train$IsDefaulted, levels = c(1,0), labels = c("default", "non-default")) #alternative method of replacing values
+
+train$TransactionStatus <- ifelse(train$TransactionStatus == 1, "accepted", "rejected")
 
 #converting "character" variables categorical variables
 train[sapply(train, is.character)] <- lapply(train[sapply(train, is.character)], as.factor)
@@ -76,6 +78,29 @@ train$IsThirdPartyConfirmed <- as.factor(train$IsThirdPartyConfirmed)
 num_var <- c("TransactionStartTime","Value","Amount","AmountLoan","TransactionCost")
 num_vec <- which(names(train) %in% num_var)
 train[,-(num_vec)] <- map(train[,-(num_vec)], as.factor)
+
+#visual overview of data
+ggplot(train, mapping = aes(x = AmountLoan, fill = IsDefaulted))+
+  geom_histogram()+
+  labs(title = "Distribution of Loan Amount by Default Status")
+
+ggplot(train, mapping = aes(x = ProductCategory, fill = ProductCategory))+
+  geom_bar()+
+  labs(title = "Loans by Product Category")+
+  xlab("Category")+
+  coord_flip()
+
+ggplot(train, mapping = aes(x = TransactionStatus, fill = TransactionStatus)) +
+  geom_bar()+
+  labs(title = "Loan Approval Status")+
+  xlab("Loan approval")
+
+ggplot(train, mapping = aes(x = IsDefaulted, fill = IsDefaulted))+
+  geom_bar()+
+  labs(title = "Loan Default Status")+
+  xlab("Loan Default")+
+  coord_flip()
+
 
 #visual overview of outliers
 par(mfrow = c(2,2)) #setting a 2 by 2 plotting space
