@@ -41,7 +41,7 @@ which(names(train) %in% names(unlinked_data))
 
 #identifying variable to use as key 
 train %>%
-  count(CustomerId, TransactionId, BatchId) %>%
+  count(CustomerId, TransactionId, BatchId,ProviderId) %>%
   filter(n > 1)
 
 #removing Country code and Currency Code columns because they are redundant
