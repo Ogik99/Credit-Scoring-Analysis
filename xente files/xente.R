@@ -39,7 +39,10 @@ for (dta in data_list){
 which(names(unlinked_data) %in% names(train))
 which(names(train) %in% names(unlinked_data))
 
-#perform tests to merge the datasets
+#identifying variable to use as key 
+train %>%
+  count(CustomerId, TransactionId, BatchId) %>%
+  filter(n > 1)
 
 #removing Country code and Currency Code columns because they are redundant
 index_country <- which(names(train) == "CountryCode")
