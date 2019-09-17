@@ -11,8 +11,8 @@ library(tidyverse)
 library(visdat)
 
 #loading data
-train <- read_csv("train.csv")
-unlinked_data <- read_csv("unlinked.csv")
+train <- as.data.frame(read_csv("train.csv"))
+unlinked_data <- as.data.frame(read_csv("unlinked.csv"))
 
 #Getting an overview of the data
 data_list <- list(train, unlinked_data)
@@ -72,9 +72,10 @@ train[sapply(train, is.character)] <- lapply(train[sapply(train, is.character)],
 train$IsFinalPayBack <- as.factor(train$IsFinalPayBack)
 train$IsThirdPartyConfirmed <- as.factor(train$IsThirdPartyConfirmed)
 
-#defining a list of the numeric variables
-num_var <- train[sapply(train, is.numeric)]
-num_index <- which(names(train) %in% names(num_var))
+#alternative method of converting non-numeric variables to factors
+num_var <- c("TransactionStartTime","Value","Amount","AmountLoan","TransactionCost")
+num_vec <- which(names(train) %in% num_var)
+train[,-(num_vec)] <- map(train[,-(num_vec)], as.factor)
 
 #visual overview of outliers
 par(mfrow = c(2,2)) #setting a 2 by 2 plotting space
