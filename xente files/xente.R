@@ -107,6 +107,11 @@ ggplot(train, mapping = aes(x= ProductCategory, y = AmountLoan))+
   ylab("Loan Amount")+
   coord_flip()
 
+train %>%
+  count(ProductCategory, TransactionStatus) %>%
+  ggplot(mapping = aes( y= ProductCategory, x = TransactionStatus)) +
+  geom_tile(mapping = aes(fill = n))
+
 #visual overview of outliers for the numeric variables
 par(mfrow = c(2,2)) #setting a 2 by 2 plotting space
 for (ivar in num_index){
