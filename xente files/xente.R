@@ -104,7 +104,8 @@ ggplot(train, mapping = aes(x = IsDefaulted, fill = IsDefaulted))+
 ggplot(train, mapping = aes(x= ProductCategory, y = AmountLoan))+
   geom_boxplot(outlier.color = "red")+
   labs(title = "Distribution of Loan Amount by Product") +
-  ylab("Loan Amount")
+  ylab("Loan Amount")+
+  coord_flip()
 
 #visual overview of outliers for the numeric variables
 par(mfrow = c(2,2)) #setting a 2 by 2 plotting space
